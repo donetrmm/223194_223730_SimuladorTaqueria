@@ -1,7 +1,10 @@
 package com.simulador;
 
+import com.simulador.services.RestauranteService;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        RestauranteService restauranteService = new RestauranteService();
+        restauranteService.iniciar();
     }
 }
