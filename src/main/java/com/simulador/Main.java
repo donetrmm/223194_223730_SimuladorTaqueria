@@ -1,10 +1,10 @@
 package com.simulador;
 
-import com.simulador.services.RestauranteService;
+import com.simulador.views.GameApp;
 
-public class Main {
-    public static void main(String[] args) {
-        RestauranteService restauranteService = new RestauranteService();
-        restauranteService.iniciar();
+public class Main
+{
+    public static void main( String[] args ) {
+        GameApp.main(args);
     }
 }
