@@ -1,4 +1,4 @@
-package org.simulador;
+package com.simulador;
 
 public class Main {
     public static void main(String[] args) {
