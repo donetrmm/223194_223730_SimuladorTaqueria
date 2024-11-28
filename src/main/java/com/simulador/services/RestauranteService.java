@@ -1,7 +1,6 @@
 package com.simulador.services;
 
 import com.simulador.models.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -17,7 +16,7 @@ public class RestauranteService {
 
     public RestauranteService() {
         this.restaurante = new Restaurante(
-            20,
+                20,
                 (int)(20 * 0.10),
                 (int)(20 * 0.15)
         );
@@ -85,8 +84,8 @@ public class RestauranteService {
         return restaurante.getComensalesEnEspera();
     }
 
-    public List<Comensal> getComensalesActuales() {
-        return restaurante.getComensalesActuales();
+    public List<Comensal> getAllComensales() {
+        return restaurante.getAllComensales();
     }
 
 

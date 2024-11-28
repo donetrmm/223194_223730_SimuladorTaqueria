@@ -24,6 +24,7 @@ public class Comensal implements Runnable {
         this.estado = ESTADO_ESPERANDO_RECEPCIONISTA;
     }
 
+
     @Override
     public void run() {
         try {
@@ -45,12 +46,15 @@ public class Comensal implements Runnable {
 
     private void comer() throws InterruptedException {
         estado = ESTADO_COMIENDO;
+        restaurante.getAndSetComensalComiendo(this);
+
         log("está comiendo");
         Thread.sleep(TIEMPO_COMER_MS);
     }
 
     private void finalizar() {
         estado = ESTADO_TERMINADO;
+        restaurante.getAndSetComensalTerminado(this);
         if (orden != null) {
             orden.setEstado("Terminada");
         }
@@ -60,14 +64,16 @@ public class Comensal implements Runnable {
         log("ha terminado y se retira del restaurante");
     }
 
-    private void log(String mensaje) {
-        System.out.println("[Comensal " + id + "] " + mensaje);
+    public String getEstado() {
+        return estado;
     }
 
     public int getId() {
         return id;
     }
-
+    private void log(String mensaje) {
+        System.out.println("[Comensal " + id + "] " + mensaje);
+    }
     public void setEstado(String estado) {
         this.estado = estado;
     }
@@ -75,4 +81,5 @@ public class Comensal implements Runnable {
     public void setOrden(Orden orden) {
         this.orden = orden;
     }
+
 }

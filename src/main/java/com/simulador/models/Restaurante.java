@@ -13,6 +13,9 @@ public class Restaurante {
     private final Queue<Orden> bufferPedidos;
     private final Queue<Orden> bufferCocina;
     private final Queue<Orden> bufferPedidoPreparado;
+    private final Queue<Orden> bufferPedidoListo;
+    private final ArrayList<Comensal> allComensales;
+
     private final Semaphore mesasDisponibles;
     private final Semaphore meserosDisponibles;
     private final Semaphore cocinerosDisponibles;
@@ -24,6 +27,8 @@ public class Restaurante {
         this.bufferPedidos = new LinkedList<>();
         this.bufferCocina = new LinkedList<>();
         this.bufferPedidoPreparado = new LinkedList<>();
+        this.bufferPedidoListo = new LinkedList<>();
+        this.allComensales = new ArrayList<>();
         this.mesasDisponibles = new Semaphore(capacidad, true);
         this.meserosDisponibles = new Semaphore(numMeseros, true);
         this.cocinerosDisponibles = new Semaphore(numCocineros, true);
@@ -38,6 +43,7 @@ public class Restaurante {
         }
         mesasDisponibles.acquire();
         clientes++;
+        allComensales.add(comensal);
         System.out.println("[Comensal " + comensal.getId() +
                 "] ingresó al restaurante (" + clientes + "/" + capacidad + ")");
         return true;
@@ -135,8 +141,31 @@ public class Restaurante {
             comensales.add(orden.getComensal());
         }
         for (Orden orden : bufferPedidoPreparado) {
-            comensales.add(orden.getComensal());
+            Comensal comensal = orden.getComensal();
+            comensales.add(comensal);
         }
         return comensales;
+    }
+
+    public synchronized void getAndSetComensalComiendo(Comensal comensal){
+        for (Comensal comensals : allComensales){
+            if (comensals.getId() == comensal.getId()){
+                comensals.setEstado("Comiendo");
+                break;
+            }
+        }
+    }
+
+    public synchronized void getAndSetComensalTerminado(Comensal comensal){
+        for (Comensal comensals : allComensales){
+            if (comensals.getId() == comensal.getId()){
+                comensals.setEstado("Terminado");
+                break;
+            }
+        }
+    }
+
+    public synchronized ArrayList<Comensal> getAllComensales(){
+        return allComensales;
     }
 }
