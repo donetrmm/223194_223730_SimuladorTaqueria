@@ -13,7 +13,6 @@ public class Restaurante {
     private final Queue<Orden> bufferPedidos;
     private final Queue<Orden> bufferCocina;
     private final Queue<Orden> bufferPedidoPreparado;
-    private final Queue<Orden> bufferPedidoListo;
     private final ArrayList<Comensal> allComensales;
 
     private final Semaphore mesasDisponibles;
@@ -27,7 +26,6 @@ public class Restaurante {
         this.bufferPedidos = new LinkedList<>();
         this.bufferCocina = new LinkedList<>();
         this.bufferPedidoPreparado = new LinkedList<>();
-        this.bufferPedidoListo = new LinkedList<>();
         this.allComensales = new ArrayList<>();
         this.mesasDisponibles = new Semaphore(capacidad, true);
         this.meserosDisponibles = new Semaphore(numMeseros, true);

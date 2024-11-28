@@ -60,10 +60,6 @@ public class RestauranteService {
         return restaurante;
     }
 
-    public int getComensalesEnRestaurante() {
-        return restaurante.getComensales();
-    }
-
     public int getBufferPedidos() {
         return restaurante.getBufferPedidos();
     }

@@ -11,19 +11,6 @@ public class DistribucionPoison {
         this.random = new Random();
     }
 
-    public int nextPoisson() {
-        double L = Math.exp(-lambda);
-        double p = 1.0;
-        int k = 0;
-
-        do {
-            k++;
-            p *= random.nextDouble();
-        } while (p > L);
-
-        return k - 1;
-    }
-
     public double nextInterArrivalTime() {
         return -Math.log(1.0 - random.nextDouble()) / lambda;
     }
