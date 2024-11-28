@@ -1,22 +1,29 @@
 package com.simulador.views;
 
+import com.almasb.fxgl.animation.Animatable;
+import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.TransformComponent;
 import com.simulador.services.RestauranteService;
 import com.simulador.models.*;
 import com.simulador.views.models.*;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.shape.Rectangle;
+import javafx.application.Platform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javafx.animation.Interpolator;
+
 
 public class GameApp extends GameApplication {
     private RestauranteService restauranteService;
@@ -44,20 +51,30 @@ public class GameApp extends GameApplication {
 
         for (int i = 0; i < 20; i++) {
             Entity mesa = FXGL.entityBuilder()
-                    .at(100 + (i % 5) * 150, 100 + (i / 5) * 150)
-                    .view(new Rectangle(40, 40, Color.BLACK))
+                    .at(-80 + (i % 5) * 150, -110 + (i / 5) * 150)
+                    .viewWithBBox("mesa.png")
                     .buildAndAttach();
             mesas.add(mesa);
+
+            TransformComponent mesaComponent = mesa.getTransformComponent();
+            mesaComponent.setScaleY(0.2);
+            mesaComponent.setScaleX(0.2);
         }
+
 
         for (int i = 0; i < (int)(20 * 0.10); i++) {
             MeseroUI meseroUI = new MeseroUI(
                     new Mesero(i, restauranteService.getRestaurante()),
-                    800,
+                    850,
                     100 + i * 100
             );
+
             meseros.add(meseroUI);
+            TransformComponent meseroComponent = meseroUI.getTransformComponent();
+            meseroComponent.setScaleY(0.2);
+            meseroComponent.setScaleX(0.2);
             FXGL.getGameWorld().addEntity(meseroUI);
+
         }
 
         for (int i = 0; i < (int)(20 * 0.15); i++) {
@@ -67,6 +84,9 @@ public class GameApp extends GameApplication {
                     100 + i * 100
             );
             cocineros.add(cocineroUI);
+            TransformComponent cocineroComponent = cocineroUI.getTransformComponent();
+            cocineroComponent.setScaleY(0.4);
+            cocineroComponent.setScaleX(0.4);
             FXGL.getGameWorld().addEntity(cocineroUI);
         }
 
@@ -160,7 +180,10 @@ public class GameApp extends GameApplication {
         return mesaIndex;
     }
 
+
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }
