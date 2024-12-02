@@ -163,6 +163,15 @@ public class Restaurante {
         }
     }
 
+    public synchronized void getAndSetComensalEsperandoPedido(Comensal comensal) throws InterruptedException {
+        for (Comensal comensals : allComensales){
+            if (comensals.getId() == comensal.getId()){
+                comensals.setEstado("EsperandoPedido");
+                break;
+            }
+        }
+    }
+
     public synchronized ArrayList<Comensal> getAllComensales(){
         return allComensales;
     }

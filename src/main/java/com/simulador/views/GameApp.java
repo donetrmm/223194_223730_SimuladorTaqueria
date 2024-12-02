@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javafx.animation.PauseTransition;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -29,6 +31,10 @@ public class GameApp extends GameApplication {
     private List<CocineroUI> cocineros;
     private Text detallesText;
     private Map<Integer, ComensalUI> comensales;
+
+    private static final double POSICION_INICIAL_MESERO_X = 850;
+    private static final double POSICION_INICIAL_MESERO_Y = 260;
+    private static final double POSICION_INICIAL_MESERO_Y2 = 100;
 
     public GameApp() {
     }
@@ -58,7 +64,7 @@ public class GameApp extends GameApplication {
         }
 
         for(i = 0; i < 2; ++i) {
-            MeseroUI meseroUI = new MeseroUI(new Mesero(i, this.restauranteService.getRestaurante()), 850.0, (double)(260 + i * 100));
+            MeseroUI meseroUI = new MeseroUI(new Mesero(i, this.restauranteService.getRestaurante()), POSICION_INICIAL_MESERO_X, (double)(POSICION_INICIAL_MESERO_Y + i * POSICION_INICIAL_MESERO_Y2));
             this.meseros.add(meseroUI);
             cocineroComponent = meseroUI.getTransformComponent();
             cocineroComponent.setScaleY(0.2);
@@ -161,5 +167,29 @@ public class GameApp extends GameApplication {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        for (ComensalUI comensalUI : comensales.values()) {
+            Comensal comensal = comensalUI.getComensal();
+
+            if (comensal.getEstado().equals("Comiendo")) {
+                MeseroUI meseroUI = meseros.get(0);
+                moverMeseroAMesa(meseroUI, comensalUI.getX(), comensalUI.getY());
+
+                devolverMeseroAPosicionInicial(meseroUI);
+            }
+        }
+    }
+
+    private void moverMeseroAMesa(MeseroUI meseroUI, double x, double y) {
+        meseroUI.setPosition(x, y);
+    }
+
+    private void devolverMeseroAPosicionInicial(MeseroUI meseroUI) {
+        PauseTransition delay = new PauseTransition(Duration.seconds(0.01));
+        delay.setOnFinished(event -> meseroUI.setPosition(POSICION_INICIAL_MESERO_X, POSICION_INICIAL_MESERO_Y));
+        delay.play();
     }
 }

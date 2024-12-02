@@ -72,10 +72,12 @@ public class Recepcionista implements Runnable {
 
     private boolean entrarAlRestaurante(Comensal comensal) throws InterruptedException {
         boolean acceso = restaurante.intentarIngresarComensal(comensal);
+
         if (acceso) {
             comensal.setEstado("EsperandoPedido");
             Orden nuevaOrden = new Orden(comensal.getId(), comensal);
             comensal.setOrden(nuevaOrden);
+
             restaurante.agregarNuevaOrden(nuevaOrden);
 
             Comensal comensalEnRestaurante = new Comensal(comensal.getId(), restaurante);
